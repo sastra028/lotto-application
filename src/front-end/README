@@ -1,0 +1,5 @@
+# command for test
+npm install
+ng serve
+# command for deploy
+ng build --prod
