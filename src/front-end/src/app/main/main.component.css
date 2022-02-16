@@ -3,8 +3,8 @@ table {
   }
 
   .example-form {
-    min-width: 150px;
-    max-width: 500px;
+    min-width: 50px;
+    max-width: 150px;
     width: 100%;
   }
   
@@ -15,8 +15,8 @@ table {
   .mainForm {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 20px;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* margin: 20px; */
   }
  
