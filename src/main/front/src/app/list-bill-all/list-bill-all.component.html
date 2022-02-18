@@ -1,0 +1,47 @@
+<div class="search-results-container-history"
+             infinite-scroll
+             [scrollWindow]="false"
+             (scrolled)="onScrollDownHistory($event)">
+
+             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <mat-card style="margin-top: 10px; width: 40%; line-height: 24px;" *ngFor="let session of sessionHistory">
+              <mat-card-title *ngIf="islangThai" style="font-size: 20px;">{{session.coursecode}}
+                - {{session.classname}}</mat-card-title>
+              <mat-card-title *ngIf="!islangThai" style="font-size: 20px;">{{session.coursecode}}
+                - {{session.classnameeng}}</mat-card-title>
+              <mat-card-content>
+                <div style="font-size: 16px;" *ngIf="getCurrentLang() == 'th'">
+                  {{'CLASS_HISTORY.ACADEMIC_YEAR' | translate}} : {{session.acadyear}}
+                </div>
+                <div style="font-size: 16px;" *ngIf="getCurrentLang() !== 'th'">
+                  {{'CLASS_HISTORY.ACADEMIC_YEAR' | translate}} : {{session.acadyear - 543}}
+                </div>
+                <div style="font-size: 16px;">
+                  {{'CLASS_HISTORY.CLASS_DATE' | translate}} : {{session.classdate | date: 'dd/MM/yyyy'}}
+                </div>
+                <div style="font-size: 16px;">
+                  {{'CLASS_HISTORY.CLASS_TIME' | translate}} : {{session.classtime}}
+                </div>
+                <div style="font-size: 16px;">
+                  {{'CLASS_HISTORY.CLASS_STATUS.TITLE' | translate}} : <a style="color: forestgreen;"
+                                                                          *ngIf="session.status">{{'CLASS_HISTORY.CLASS_STATUS.OPEN' | translate}}</a>
+                  <a style="color: crimson;"
+                     *ngIf="!session.status">{{'CLASS_HISTORY.CLASS_STATUS.CLOSE' | translate}}</a>
+                </div>
+
+
+                <!-- <mat-icon (click)="openSession(session)" class="myDIV" style="text-align: center; font-size: 35px; margin: 5px 0;">open_in_new</mat-icon> -->
+                <!-- <div class="hide">ดำเนินการต่อ</div> -->
+                <div *ngIf="session.status == 1"
+                     style="
+                          cursor: pointer; ">
+                  <button mat-button style="width: 100%; " (click)="openSession(session)">ดำเนินการ</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            </div>
+
+            <div class="center-spin">
+              <mat-spinner *ngIf="loadingspin"></mat-spinner>
+            </div>
+          </div>
