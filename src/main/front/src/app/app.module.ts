@@ -38,7 +38,6 @@ import { MainOneComponent } from './main-one/main-one.component';
 import { MainTwoComponent } from './main-two/main-two.component';
 import { MainThreeComponent } from './main-three/main-three.component';
 import { MainFourComponent } from './main-four/main-four.component';
-import {InterceptorInterceptor} from "./intercepters/interceptor.interceptor";
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,9 +83,7 @@ import {InterceptorInterceptor} from "./intercepters/interceptor.interceptor";
     MatMenuModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
