@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <div class="container" >
     <div class="bg-utcc">
       <mat-tab-group #tabGroup mat-align-tabs="center" 
@@ -65,6 +65,34 @@
 
       </mat-tab-group>
     </div>
+  </div>
+</div>
+ -->
+
+
+ <div class="container">
+  <div class="bg-utcc">
+    <mat-tab-group #tabGroup mat-align-tabs="center" 
+                   selectedIndex="{{tabIndex}}"
+                   style="height: 100vh;">
+
+      <mat-tab label="1" style="cursor: pointer;">
+       <app-class-session-search-searchpersonal></app-class-session-search-searchpersonal>
+      </mat-tab>
+
+      <mat-tab label="2" style="cursor: pointer;">
+        <app-class-session-search-freesearch></app-class-session-search-freesearch>
+      </mat-tab>
+
+      <mat-tab label="3" style="cursor: pointer;">
+        <app-class-session-search-attendance-report></app-class-session-search-attendance-report>
+      </mat-tab>
+      
+      <mat-tab label="4" style="cursor: pointer;">
+        <app-class-session-search-class-history></app-class-session-search-class-history>
+      </mat-tab>
+
+    </mat-tab-group>
   </div>
 </div>
 
