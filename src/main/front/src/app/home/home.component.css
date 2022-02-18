@@ -9,3 +9,7 @@ mat-sidenav, mat-sidenav-content> {
 mat-sidenav {
     background-color: lightcoral;
 } */
+
+.mat-tab-group {
+    margin-bottom: 48px;
+  }

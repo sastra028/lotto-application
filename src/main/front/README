@@ -1,3 +1,5 @@
+ng g component list-main
+
 # command for test
 npm install
 ng serve

@@ -10,4 +10,5 @@ import com.lotto.lottoapi.entity.LottoEntity;
 @Repository
 public interface LottoRepository extends JpaRepository<LottoEntity, String> {
 	List<LottoEntity> findByType(String type);
+//	List<LottoEntity> findByTypeGroupByBuyerName(String type);
 }

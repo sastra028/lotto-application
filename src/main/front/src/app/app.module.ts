@@ -15,14 +15,46 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import {HttpClientModule} from '@angular/common/http';
-
+import { ListTwoComponent } from './list-two/list-two.component';
+import { ListThreeComponent } from './list-three/list-three.component';
+import { ListMainComponent } from './list-main/list-main.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ListBillComponent } from './list-bill/list-bill.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import { ListThreeZeroComponent } from './list-three-zero/list-three-zero.component';
+import { ListThreeOneComponent } from './list-three-one/list-three-one.component';
+import { ListThreeTwoComponent } from './list-three-two/list-three-two.component';
+import { ListThreeThreeComponent } from './list-three-three/list-three-three.component';
+import { ListThreeFourComponent } from './list-three-four/list-three-four.component';
+import { ListThreeFiveComponent } from './list-three-five/list-three-five.component';
+import { ListThreeSixComponent } from './list-three-six/list-three-six.component';
+import { ListThreeSevenComponent } from './list-three-seven/list-three-seven.component';
+import { ListThreeNightComponent } from './list-three-night/list-three-night.component';
+import { ListThreeNineComponent } from './list-three-nine/list-three-nine.component';
+import { ListThreeTenComponent } from './list-three-ten/list-three-ten.component';
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     LoginComponent,
     HomeComponent,
-    SidenavComponent
+    SidenavComponent,
+    ListTwoComponent,
+    ListThreeComponent,
+    ListMainComponent,
+    ListBillComponent,
+    ListThreeZeroComponent,
+    ListThreeOneComponent,
+    ListThreeTwoComponent,
+    ListThreeThreeComponent,
+    ListThreeFourComponent,
+    ListThreeFiveComponent,
+    ListThreeSixComponent,
+    ListThreeSevenComponent,
+    ListThreeNightComponent,
+    ListThreeNineComponent,
+    ListThreeTenComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +68,9 @@ import {HttpClientModule} from '@angular/common/http';
     MatToolbarModule,
     MatSidenavModule,
     HttpClientModule,
-    
+    MatTabsModule,
+    MatIconModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

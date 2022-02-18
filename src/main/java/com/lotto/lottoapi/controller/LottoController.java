@@ -27,6 +27,8 @@ import com.lotto.lottoapi.response.LottoSaveResponse;
 import com.lotto.lottoapi.response.LottoThreeListNewResponse;
 import com.lotto.lottoapi.response.LottoThreeListResponse;
 import com.lotto.lottoapi.response.LottoThreeListSubResponse;
+import com.lotto.lottoapi.response.LottoTwoListNewResponse;
+import com.lotto.lottoapi.response.LottoTwoListNewResponse2;
 import com.lotto.lottoapi.response.LottoTwoListResponse;
 
 @Controller
@@ -37,6 +39,65 @@ public class LottoController {
 	@Autowired
 	private LottoRepository lottoRepository;
 
+	
+	@PostMapping(path = "/list-bill", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> listBill() {
+
+		List<LottoEntity> lottoEntityList = lottoRepository.findByType("2");
+
+		HashMap<String, Integer> countPriceA = new HashMap<String, Integer>();
+		HashMap<String, Integer> countPriceB = new HashMap<String, Integer>();
+		HashMap<String, String> buyerName = new HashMap<String, String>();
+
+		for (LottoEntity lottoEntity : lottoEntityList) {
+			if (countPriceA.containsKey(lottoEntity.getNumber())) {
+				Integer price = countPriceA.get(lottoEntity.getNumber()) + lottoEntity.getPriceA();
+				countPriceA.put(lottoEntity.getNumber(), price);
+			} else {
+				countPriceA.put(lottoEntity.getNumber(), lottoEntity.getPriceA());
+			}
+
+			if (countPriceB.containsKey(lottoEntity.getNumber())) {
+				Integer price = countPriceB.get(lottoEntity.getNumber()) + lottoEntity.getPriceB();
+				countPriceB.put(lottoEntity.getNumber(), price);
+			} else {
+				countPriceB.put(lottoEntity.getNumber(), lottoEntity.getPriceB());
+			}
+			if(buyerName.containsKey(lottoEntity.getBuyerName())) {
+				buyerName.put(null, lottoEntity.getBuyerName());
+			} else {
+				
+			}
+		}
+
+//		List<LottoTwoListNewResponse> lottoTwoListNewResponseList = new ArrayList<>();
+//		LottoTwoListNewResponse lottoTwoListNewResponse = new LottoTwoListNewResponse();
+		List<LottoTwoListResponse> lottoTwoListResponseList = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			LottoTwoListResponse model = new LottoTwoListResponse();
+
+			String number = StringUtils.leftPad(String.valueOf(i), 2, "0");
+			model.setNumber(number);
+
+			if (countPriceA.containsKey(number)) {
+				Integer price = countPriceA.get(number);
+				model.setUp(String.valueOf(price));
+			}
+
+			if (countPriceB.containsKey(number)) {
+				Integer price = countPriceB.get(number);
+				model.setDown(String.valueOf(price));
+			}
+
+			if (StringUtils.isNotBlank(model.getUp()) && StringUtils.isNotBlank(model.getDown())) {
+				lottoTwoListResponseList.add(model);
+			}
+
+		}
+
+		return new ResponseEntity<>(lottoTwoListResponseList, HttpStatus.OK);
+	}
+	
 	@PostMapping(path = "/list2", produces = "application/json")
 	public @ResponseBody ResponseEntity<?> list2() {
 
@@ -233,7 +294,7 @@ public class LottoController {
 		lottoEntity.setPriceA(priceA);
 		lottoEntity.setPriceB(priceB);
 
-		lottoEntity.setBuyerName("");
+		lottoEntity.setBuyerName(request.getBuyerName());
 
 		lottoEntity.setCreated(new Date());
 		lottoEntity.setCreateBy("system");

@@ -38,6 +38,12 @@ export class ApiService {
         {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
   }
 
+  getBill(): Observable<any> {
+    return this.http
+      .post(`${API_URL}/api/lotto/list-bill`,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
   
   getList3(): Observable<any> {
     return this.http

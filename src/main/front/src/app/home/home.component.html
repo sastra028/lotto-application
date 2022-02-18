@@ -1,8 +1,21 @@
-<mat-sidenav-container>
-    <mat-sidenav #sindenav mode="side" [(opened)] = "opened">Sidenav</mat-sidenav>
-    <mat-sidenav-content>Main
-        <button (click)="opened=!opened">Toggle Opened</button>
-        <!-- <button (click)="sidenav.open()">Open</button>
-        <button (click)="sidenav.close()">Close</button> -->
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<label>เลข</label>
+<label>บน</label>
+<label>ล่าง</label>
+<div class="container">
+    <div class="bg-utcc">
+      <mat-tab-group #tabGroup mat-align-tabs="center" 
+                     selectedIndex="{{tabIndex}}"
+                     style="height: 100vh;">
+  
+        <mat-tab label="test" style="cursor: pointer;">
+         <app-list-two></app-list-two>
+        </mat-tab>
+  
+        <mat-tab label="test2" style="cursor: pointer;">
+          <app-list-three></app-list-three>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  
+  

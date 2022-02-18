@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationExtras } from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  tabIndex:any;
+  tabData:any;
+
+  dataSource = [];
+
+  constructor(
+    private router: Router,
+  ) { 
+    if(localStorage.getItem("CURRENT_JWT") == null){
+      this.router.navigate(['/home']);
+    }
+
+    const navigate = this.router.getCurrentNavigation()?.extras.state;
+    if(navigate){
+      this.tabData = navigate;
+      this.tabIndex = this.tabData.tabIndex;
+    }else{
+      this.tabIndex = 0;
+    }
+
+  }
 
   ngOnInit(): void {
   }
