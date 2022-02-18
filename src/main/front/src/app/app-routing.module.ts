@@ -6,35 +6,23 @@ import {SidenavComponent} from './navigation/sidenav/sidenav.component';
 import { HomeComponent} from './home/home.component';
 import { ListMainComponent} from './list-main/list-main.component';
 import { ListThreeComponent} from './list-three/list-three.component';
+import { MainTestComponent } from './main-test/main-test.component';
 const routes: Routes = [
-  // {path: '', redirectTo: 'login', pathMatch: 'full'},
-  // {path: 'login', component: LoginComponent},
-  // {
-  //   path: 'page', component: SidenavComponent, children: [
-  //     {path: '', redirectTo: 'main', pathMatch: 'full'},
-  //     {path: 'main', component: MainComponent},
-  //   ]
-  // }
-  // {path: '', redirectTo: 'main', pathMatch: 'full'},
-  // {path: 'login', component: LoginComponent}, 
   {path: '', component: MainComponent}, 
   {path: 'home', component: HomeComponent}, 
   {path: 'list-main', component: ListMainComponent}, 
 
-  // {
-  //   path: 'smt', component: SidenavComponent, children: [
-  //     // {path: '', redirectTo: 'list', pathMatch: 'full', canActivate: [AuthGuard]},
-  //     {path: 'list', component: ListThreeComponent, canActivate: [AuthGuard]},
-  //   ]
-  // },
-
-  // {path: 'main', component: HomeComponent},
-  // {
-  //   path: 'page', component: SidenavComponent, children: [
-  //     {path: '', redirectTo: 'main', pathMatch: 'full'},
-  //     {path: 'main', component: MainComponent},
-  //   ]
-  // }
+  {path: '', redirectTo: 'class-attendance', pathMatch: 'full'},
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'class-attendance', component: SidenavComponent, children: [
+      {path: '', redirectTo: 'class-session-search', pathMatch: 'full'},
+      { path: 'class-session-create', component: MainComponent},
+      { path: 'class-session-qr', component: ListThreeComponent},
+      { path: 'class-session-search', component:MainTestComponent},
+      { path: 'class-session-qr-v2', component:HomeComponent},
+    ]
+  }
 
 ];
 

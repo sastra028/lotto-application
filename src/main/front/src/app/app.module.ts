@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatTableModule } from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { ListTwoComponent } from './list-two/list-two.component';
 import { ListThreeComponent } from './list-three/list-three.component';
 import { ListMainComponent } from './list-main/list-main.component';
@@ -33,6 +33,12 @@ import { ListThreeSevenComponent } from './list-three-seven/list-three-seven.com
 import { ListThreeNightComponent } from './list-three-night/list-three-night.component';
 import { ListThreeNineComponent } from './list-three-nine/list-three-nine.component';
 import { ListThreeTenComponent } from './list-three-ten/list-three-ten.component';
+import { MainTestComponent } from './main-test/main-test.component';
+import { MainOneComponent } from './main-one/main-one.component';
+import { MainTwoComponent } from './main-two/main-two.component';
+import { MainThreeComponent } from './main-three/main-three.component';
+import { MainFourComponent } from './main-four/main-four.component';
+import {InterceptorInterceptor} from "./intercepters/interceptor.interceptor";
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +60,12 @@ import { ListThreeTenComponent } from './list-three-ten/list-three-ten.component
     ListThreeSevenComponent,
     ListThreeNightComponent,
     ListThreeNineComponent,
-    ListThreeTenComponent
+    ListThreeTenComponent,
+    MainTestComponent,
+    MainOneComponent,
+    MainTwoComponent,
+    MainThreeComponent,
+    MainFourComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +83,10 @@ import { ListThreeTenComponent } from './list-three-ten/list-three-ten.component
     MatIconModule,
     MatMenuModule
   ],
-  providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

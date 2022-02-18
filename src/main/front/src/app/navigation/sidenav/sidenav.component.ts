@@ -24,13 +24,7 @@ export class SidenavComponent implements OnInit {
   teacherName: any;
 
   constructor(
-    private router: Router,
-    private dialog: MatDialog){
-
-      if(localStorage.getItem("CURRENT_JWT") == null){
-        this.router.navigate(['/login']);
-      }
-
+    private router: Router){
       const navigate = this.router.getCurrentNavigation()?.extras.state;
       if(navigate){
         this.tabData = navigate;
@@ -49,7 +43,7 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    console.log('1111111111111111');
   }
 
   logOut(){
