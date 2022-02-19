@@ -38,6 +38,8 @@ import { MainOneComponent } from './main-one/main-one.component';
 import { MainTwoComponent } from './main-two/main-two.component';
 import { MainThreeComponent } from './main-three/main-three.component';
 import { MainFourComponent } from './main-four/main-four.component';
+import { ListBillCardComponent } from './list-bill-card/list-bill-card.component';
+import { ListBillCardTestComponent } from './list-bill-card-test/list-bill-card-test.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +66,9 @@ import { MainFourComponent } from './main-four/main-four.component';
     MainOneComponent,
     MainTwoComponent,
     MainThreeComponent,
-    MainFourComponent
+    MainFourComponent,
+    ListBillCardComponent,
+    ListBillCardTestComponent
   ],
   imports: [
     BrowserModule,
