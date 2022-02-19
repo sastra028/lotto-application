@@ -47,19 +47,19 @@ export class ListBillComponent implements OnInit {
       update: '17/02/2022-12:33', 
 
       listTwoUpTotal: "200",
-      listTwoUpPrize: "100",
+      listTwoUpPrize: "0",
 
       listTwoDownTotal: "200",
-      listTwoDownPrize: "2000",
+      listTwoDownPrize: "0",
 
       listThreeDirectTotal: "200",
-      listThreeDirectPrize: "200",
+      listThreeDirectPrize: "0",
 
       listThreeToteTotal: "200",
-      listThreeTotePrize: "200",
+      listThreeTotePrize: "0",
 
       listTotal: "20000",
-      prizeTotal: "10000",
+      prizeTotal: "0",
       listTwoUp:[
         {
           number:"02",
@@ -69,7 +69,7 @@ export class ListBillComponent implements OnInit {
         {
           number:"03",
           price:"20",
-          prize: true
+          prize: false
         }
       ],
       listTwoDown:[
@@ -81,7 +81,7 @@ export class ListBillComponent implements OnInit {
         {
           number:"03",
           price:"20",
-          prize: true
+          prize: false
         }
       ],
       listThreeDirect:[
