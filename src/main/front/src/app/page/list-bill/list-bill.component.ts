@@ -46,19 +46,19 @@ export class ListBillComponent implements OnInit {
       name: 'ป้านุ', 
       update: '17/02/2022-12:33', 
 
-      listTwoUpTotal: "200",
-      listTwoUpPrize: "0",
+      twoUpTotal: "200",
+      twoUpPrize: "0",
 
-      listTwoDownTotal: "200",
-      listTwoDownPrize: "0",
+      twoDownTotal: "200",
+      ltwoDownPrize: "0",
 
-      listThreeDirectTotal: "200",
-      listThreeDirectPrize: "0",
+      threeDirectTotal: "200",
+      threeDirectPrize: "0",
 
-      listThreeToteTotal: "200",
-      listThreeTotePrize: "0",
+      threeToteTotal: "200",
+      threeTotePrize: "0",
 
-      listTotal: "20000",
+      priceTotal: "20000",
       prizeTotal: "0",
       listTwoUp:[
         {
