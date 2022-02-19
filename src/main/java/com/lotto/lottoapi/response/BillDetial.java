@@ -6,5 +6,5 @@ import lombok.Data;
 public class BillDetial {
 	private String number;
 	private int price;
-	private int prize;
+	private boolean prize;
 }

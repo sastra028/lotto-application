@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class BillListResponse {
-	private String billId;
+	private long billId;
 	private String name;
 	private String update;
 	

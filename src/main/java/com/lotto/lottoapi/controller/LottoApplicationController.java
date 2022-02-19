@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.persistence.Id;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,14 @@ public class LottoApplicationController {
 	@Autowired
 	private LottoApplicationRepository lottoApplicationRepository;
 
+	private static final String typeTwo = "2";
+	private static final String typeThree = "3";
+	private static final String subTypeUp = "up";
+	private static final String subTypeDown = "down";
+	private static final String subTypeDirect = "direct";
+	private static final String subTypeTote = "tote";
+	private static final String createBy = "SYSTEM";
+
 	@PostMapping(path = "/list-bill", produces = "application/json")
 	public @ResponseBody ResponseEntity<?> listBill() {
 
@@ -90,26 +99,71 @@ public class LottoApplicationController {
 			int threeToteTotal = 0;
 			int threeTotePrize = 0;
 
-			int priceTotal = 0;
-			int prizeTotal = 0;
-
 			List<BillDetial> listTwoUpList = new ArrayList<>();
 			List<BillDetial> listTwoDownList = new ArrayList<>();
 			List<BillDetial> listThreeDirectList = new ArrayList<>();
 			List<BillDetial> listThreeToteList = new ArrayList<>();
 
-			List<LottoEntity> lottoTwoList = lottoRepository.findByBuyerNameAndType(billEntity.getName(), "2");
-			for (LottoEntity lottoEntity : lottoTwoList) {
-				if (lottoEntity != null) {
-					twoUpTotal = +lottoEntity.getPriceA();
-					twoDownTotal = +lottoEntity.getPriceB();
+			List<LottoApplicationEntity> lottoApplicationTwoUpEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeTwo, subTypeUp);
+			for (LottoApplicationEntity lottoApplicationTwoUpEntity : lottoApplicationTwoUpEntityList) {
+				BillDetial billDetial = new BillDetial();
+				billDetial.setNumber(lottoApplicationTwoUpEntity.getNumber());
+				billDetial.setPrice(lottoApplicationTwoUpEntity.getPrice());
+				if (StringUtils.isNotBlank(rewardTwoUp) && rewardTwoUp.equals(lottoApplicationTwoUpEntity.getNumber())) {
+					billDetial.setPrize(true);
+				} else {
+					billDetial.setPrize(false);
 				}
+				twoUpTotal += billDetial.getPrice();
+				listTwoUpList.add(billDetial);
+			}
+			List<LottoApplicationEntity> lottoApplicationTwoDownEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeTwo, subTypeDown);
+			for (LottoApplicationEntity entity : lottoApplicationTwoDownEntityList) {
+				BillDetial billDetial = new BillDetial();
+				billDetial.setNumber(entity.getNumber());
+				billDetial.setPrice(entity.getPrice());
+				if (StringUtils.isNotBlank(rewardTwoDown) && rewardTwoDown.equals(entity.getNumber())) {
+					billDetial.setPrize(true);
+				} else {
+					billDetial.setPrize(false);
+				}
+				twoDownTotal += billDetial.getPrice();
+				listTwoDownList.add(billDetial);
+			}
+			List<LottoApplicationEntity> lottoApplicationThreeDirectEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeThree, subTypeDirect);
+			for (LottoApplicationEntity entity : lottoApplicationThreeDirectEntityList) {
+				BillDetial billDetial = new BillDetial();
+				billDetial.setNumber(entity.getNumber());
+				billDetial.setPrice(entity.getPrice());
+				if (StringUtils.isNotBlank(rewardThree) && rewardThree.equals(entity.getNumber())) {
+					billDetial.setPrize(true);
+				} else {
+					billDetial.setPrize(false);
+				}
+				threeDirectTotal += billDetial.getPrice();
+				listThreeDirectList.add(billDetial);
+			}
+			List<LottoApplicationEntity> lottoApplicationThreeToteEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeThree, subTypeTote);
+			for (LottoApplicationEntity entity : lottoApplicationThreeToteEntityList) {
+				BillDetial billDetial = new BillDetial();
+				billDetial.setNumber(entity.getNumber());
+				billDetial.setPrice(entity.getPrice());
+				if (!rewardTote.isEmpty() && rewardTote.contains(entity.getNumber())) {
+					billDetial.setPrize(true);
+				} else {
+					billDetial.setPrize(false);
+				}
+				threeToteTotal += billDetial.getPrice();
+				listThreeToteList.add(billDetial);
 			}
 
 			BillListResponse billListResponse = new BillListResponse();
 			billListResponse.setBillId(billEntity.getId());
-			billListResponse.setName(billEntity.getName());
-			billListResponse.setUpdate(billEntity.getUpdated());
+			billListResponse.setName(billEntity.getBuyerName());
+
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
+			String updated = dateFormat.format(billEntity.getUpdated());
+			billListResponse.setUpdate(updated);
 
 			billListResponse.setTwoUpTotal(twoUpTotal);
 			billListResponse.setTwoUpPrize(twoUpPrize);
@@ -123,6 +177,9 @@ public class LottoApplicationController {
 			billListResponse.setThreeToteTotal(threeToteTotal);
 			billListResponse.setThreeTotePrize(threeTotePrize);
 
+			int priceTotal = twoUpTotal + twoDownTotal + threeDirectTotal + threeToteTotal;
+			int prizeTotal = twoUpPrize + twoDownPrize + threeDirectPrize + threeTotePrize;
+
 			billListResponse.setPriceTotal(priceTotal);
 			billListResponse.setPrizeTotal(prizeTotal);
 
@@ -134,7 +191,7 @@ public class LottoApplicationController {
 			billListResponseList.add(billListResponse);
 		}
 
-		return new ResponseEntity<>("", HttpStatus.OK);
+		return new ResponseEntity<>(billListResponseList, HttpStatus.OK);
 	}
 
 	private List<LottoGroupPrice> getLottoGroupPriceTwo(List<LottoEntity> lottoEntityList) {
@@ -279,14 +336,6 @@ public class LottoApplicationController {
 //			return new ResponseEntity<>("ราคา ล้าง/โต๊ท ไม่ถูกต้อง", HttpStatus.BAD_REQUEST);
 		}
 
-		String typeTwo = "2";
-		String typeThree = "3";
-		String subTypeUp = "up";
-		String subTypeDown = "down";
-		String subTypeDirect = "direct";
-		String subTypeTote = "tote";
-		String createBy = "SYSTEM";
-
 		if (number.length() == 2 && priceA > 0) {
 			LottoApplicationEntity lottoApplicationTwoUpEntity = lottoApplicationRepository.findFirstByRoundAndBuyerNameAndNumberAndTypeAndSubType(round, buyerName, number, typeTwo, subTypeUp);
 			if (lottoApplicationTwoUpEntity != null) {
@@ -373,6 +422,27 @@ public class LottoApplicationController {
 				lottoEntity.setCreateBy(createBy);
 				lottoApplicationRepository.save(lottoEntity);
 			}
+		}
+
+		Optional<BillEntity> billEntityOptional = billRepository.findById(buyerName);
+		if (billEntityOptional.isPresent()) {
+			BillEntity billEntity = billEntityOptional.get();
+			billEntity.setUpdated(new Date());
+			billRepository.save(billEntity);
+		} else {
+			Long id = billRepository.findMaxId();
+			if (id == null) {
+				id = 0l;
+			}
+			BillEntity billEntity = new BillEntity();
+			billEntity.setId(id++);
+			billEntity.setBuyerName(buyerName);
+			billEntity.setSellerName(sellerName);
+			billEntity.setUpdated(new Date());
+			billEntity.setCreated(new Date());
+			billEntity.setNote("");
+			billEntity.setUpdated(new Date());
+			billRepository.save(billEntity);
 		}
 
 		lottoSaveResponse.setStatus("success");
