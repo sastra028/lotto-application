@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
+import { AlertDialogComponent } from 'src/app/component/alert-dialog/alert-dialog.component';
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-list-bill',
@@ -7,12 +10,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListBillComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private apiService: ApiService,
+    private dialog: MatDialog,
+    ) { }
 
   limitforhistory = 0;
 
   loadingspin = false;
   islangThai?:boolean;
+
+  detailData: {
+    number: String,
+    priceA: String,
+    priceB: String,
+    buyerName: String,
+    sellerName: String,
+  } = {
+    number: '',
+    priceA: '',
+    priceB: '',
+    buyerName: '',
+    sellerName: '',
+  };
   
   
   sessionHistory:any = [
@@ -196,6 +216,7 @@ export class ListBillComponent implements OnInit {
   originally bred for hunting.`;
 
   ngOnInit(): void {
+    this.getBill();
   }
 
   
@@ -234,5 +255,35 @@ export class ListBillComponent implements OnInit {
 
   toDisplayYear(year:any) {
 
+  }
+
+
+  save(){
+    console.log('saveeeeeeee');
+    this.apiService.lottoApplicationSave(this.formSearch)
+    .subscribe( {
+      next: async (response) => {
+          this.getBill();
+      },
+      error: async (error) => {
+        this.dialog.open(AlertDialogComponent, {
+          width: '350px',
+          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+        })
+      }
+    });
+  }
+
+  getBill(){
+    this.apiService.getBill()
+    .subscribe( {
+      next: async (results) => {
+        console.log('results 2: '+results);
+        this.billList = results;
+      },
+      error: async (error) => {
+        console.log('error');
+      }
+    });
   }
 }

@@ -38,11 +38,11 @@ export class ApiService {
         {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
   }
 
-  getBill(): Observable<any> {
-    return this.http
-      .post(`${API_URL}/api/lotto/list-bill`,
-        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
-  }
+  // getBill(): Observable<any> {
+  //   return this.http
+  //     .post(`${API_URL}/api/lotto/list-bill`,
+  //       {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  // }
 
   
   getList3(): Observable<any> {
@@ -53,6 +53,35 @@ export class ApiService {
   
   getList3Main(params:any) {
     return this.http.post(`${API_URL}/api/lotto/list3-main`,params);
+  }
+
+  getBill(): Observable<any> {
+    return this.http
+      .post(`${API_URL}/api/v2/lotto/list-bill`,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+  lottoApplicationSave(form:any): Observable<any> {
+    const params = JSON.stringify(form);
+    return this.http
+      .post(`${API_URL}/api/v2/lotto/save`, params,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
+  lottoApplicationSave2(form:any): Observable<any> {
+    const params = JSON.stringify(form);
+
+
+    return this.http.post(`${API_URL}/api/v2/lotto/save`, params);
+  }
+
+  lottoApplicationSave3(form:any): Observable<any> {
+
+    const params = JSON.stringify(form);
+
+    return this.http.post(`${API_URL}/api/v2/lotto/save`, params)
+      .pipe(map(results => {
+        return results;
+      }));
   }
 
 }

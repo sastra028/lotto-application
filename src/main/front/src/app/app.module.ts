@@ -20,6 +20,8 @@ import { ListThreeMainZeroComponent } from './page/list-three-main-zero/list-thr
 import { ListBillComponent } from './page/list-bill/list-bill.component';
 import { ListTwoComponent } from './page/list-two/list-two.component';
 import {MatCardModule} from '@angular/material/card';
+import { AlertDialogComponent } from './component/alert-dialog/alert-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import {MatCardModule} from '@angular/material/card';
     MainListComponent,
     ListBillComponent,
     ListTwoComponent,
-    ListThreeMainZeroComponent
+    ListThreeMainZeroComponent,
+    AlertDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import {MatCardModule} from '@angular/material/card';
     MatTabsModule,
     MatIconModule,
     MatMenuModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],

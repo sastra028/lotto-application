@@ -245,7 +245,7 @@ public class LottoController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PostMapping(path = "/save")
+	@PostMapping(path = "/save", consumes = {"application/xml","application/json"})
 	public @ResponseBody ResponseEntity<?> save(@RequestBody @Valid LottoSaveRequest request) {
 
 		LottoSaveResponse lottoSaveResponse = new LottoSaveResponse();

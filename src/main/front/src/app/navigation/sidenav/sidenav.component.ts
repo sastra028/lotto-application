@@ -22,6 +22,7 @@ export class SidenavComponent implements OnInit {
   tabData:any;
   tabIndex:any;
   teacherName: any;
+  currentDate: any;
 
   constructor(
     private router: Router){
@@ -43,7 +44,7 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('1111111111111111');
+    this.currentDate = "17/02/2565";
   }
 
   logOut(){
