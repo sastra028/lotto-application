@@ -19,6 +19,7 @@ import { MainListComponent } from './page/main-list/main-list.component';
 import { ListThreeMainZeroComponent } from './page/list-three-main-zero/list-three-main-zero.component';
 import { ListBillComponent } from './page/list-bill/list-bill.component';
 import { ListTwoComponent } from './page/list-two/list-two.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ListTwoComponent } from './page/list-two/list-two.component';
     HttpClientModule,
     MatTabsModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatCardModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
