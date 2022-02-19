@@ -3,7 +3,7 @@
              (scrolled)="onScrollDownHistory($event)">
 
              <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <mat-card style="margin-top: 10px; width: 40%; line-height: 24px;" *ngFor="let session of sessionHistory">
+            <mat-card style="margin-top: 10px; width: 85%; line-height: 24px;" *ngFor="let session of sessionHistory">
               <mat-card-title *ngIf="islangThai" style="font-size: 20px;">{{session.coursecode}}
                 - {{session.classname}}</mat-card-title>
               <mat-card-title *ngIf="!islangThai" style="font-size: 20px;">{{session.coursecode}}

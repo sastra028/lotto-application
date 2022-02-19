@@ -7,9 +7,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListTwoComponent implements OnInit {
 
+  loadingspin = false;
+  formSearch:any = {};
+  classes:any = [];
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  async onScrollDownFreesearch(ev: any) {
+
+  }
+
+  async filterFreesearch(){
+
+  }
+  select(item:any) {
+
+  }
+
+  getCourseName(item:any) {
+
+  }
+
+  toDisplayYear(year:any) {
+
+  }
 }
