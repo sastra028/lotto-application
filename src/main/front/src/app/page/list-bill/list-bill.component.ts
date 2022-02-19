@@ -6,12 +6,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-bill.component.css']
 })
 export class ListBillComponent implements OnInit {
-  longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-  from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-  originally bred for hunting.`;
+
   constructor() { }
 
+  limitforhistory = 0;
+
+  loadingspin = false;
+  islangThai?:boolean;
+
+  sessionHistory:any = [];
+
+  classnamecurrent:any;
+  translatS: any;
+  
   ngOnInit(): void {
   }
 
+  
+
+  
+  getCurrentLang(){
+    return 'th';
+  }
+
+  async classHistory(){
+    
+  }
+
+  async onScrollDownHistory(ev: any) {
+  }
+
+  async openSession(session:any){
+
+  }
 }
