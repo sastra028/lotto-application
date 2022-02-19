@@ -1,0 +1,23 @@
+
+ <div class="container">
+    <div class="bg-utcc">
+      <mat-tab-group #tabGroup mat-align-tabs="center" 
+                     selectedIndex="{{tabIndex}}"
+                     style="height: 100vh;">
+  
+  
+        <mat-tab label="บิล" style="cursor: pointer;">
+            <app-list-bill></app-list-bill>
+        </mat-tab>
+  
+        <mat-tab label="เลขท้าย 2 ตัว ss" style="cursor: pointer;">
+            <app-list-two></app-list-two>
+        </mat-tab>
+  
+        <mat-tab label="เลขท้าย 3 ตัวหลัง 0" style="cursor: pointer;">
+            <app-list-three-main-zero></app-list-three-main-zero>
+        </mat-tab>
+  
+      </mat-tab-group>
+    </div>
+  </div>
