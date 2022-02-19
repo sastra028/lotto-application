@@ -1,6 +1,9 @@
 package com.lotto.lottoapi.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -229,6 +232,14 @@ public class LottoApplicationController {
 
 		LottoSaveResponse lottoSaveResponse = new LottoSaveResponse();
 
+		String buyerName = request.getBuyerName();
+		String number = request.getNumber();
+		String sellerName = request.getSellerName();
+
+		Date date = Calendar.getInstance().getTime();
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
+		String round = dateFormat.format(date);
+
 		// validate
 		if (StringUtils.isBlank(request.getNumber())) {
 			lottoSaveResponse.setStatus("error");
@@ -239,6 +250,18 @@ public class LottoApplicationController {
 		if (StringUtils.isBlank(request.getPriceA()) && StringUtils.isBlank(request.getPriceB())) {
 			lottoSaveResponse.setStatus("error");
 			lottoSaveResponse.setErrorMessage("ไม่ได้ระบุราคาที่ซื้อ");
+			return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		if (StringUtils.isBlank(buyerName)) {
+			lottoSaveResponse.setStatus("error");
+			lottoSaveResponse.setErrorMessage("กรุณาระบุผู้ซื้อ");
+			return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		if (StringUtils.isBlank(sellerName)) {
+			lottoSaveResponse.setStatus("error");
+			lottoSaveResponse.setErrorMessage("กรุณาระบุผู้ขาย");
 			return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
 		}
 
@@ -256,57 +279,100 @@ public class LottoApplicationController {
 //			return new ResponseEntity<>("ราคา ล้าง/โต๊ท ไม่ถูกต้อง", HttpStatus.BAD_REQUEST);
 		}
 
-		if (StringUtils.isNotBlank(request.getPriceA())) {
-			LottoApplicationEntity lottoEntity = new LottoApplicationEntity();
-			lottoEntity.setId(UUID.randomUUID().toString());
-			lottoEntity.setNumber(request.getNumber());
-			if (request.getNumber().length() == 2) {
-				lottoEntity.setType("2");
-				lottoEntity.setNature("up");
-				lottoEntity.setPrice(priceA);
-			} else if (request.getNumber().length() == 3) {
-				lottoEntity.setType("3");
-				lottoEntity.setNature("direct");
-				lottoEntity.setPrice(priceB);
+		String typeTwo = "2";
+		String typeThree = "3";
+		String subTypeUp = "up";
+		String subTypeDown = "down";
+		String subTypeDirect = "direct";
+		String subTypeTote = "tote";
+		String createBy = "SYSTEM";
+
+		if (number.length() == 2 && priceA > 0) {
+			LottoApplicationEntity lottoApplicationTwoUpEntity = lottoApplicationRepository.findFirstByRoundAndBuyerNameAndNumberAndTypeAndSubType(round, buyerName, number, typeTwo, subTypeUp);
+			if (lottoApplicationTwoUpEntity != null) {
+				int price = lottoApplicationTwoUpEntity.getPrice() + priceA;
+				lottoApplicationTwoUpEntity.setPrice(price);
+				lottoApplicationRepository.save(lottoApplicationTwoUpEntity);
 			} else {
-				lottoSaveResponse.setStatus("error");
-				lottoSaveResponse.setErrorMessage("หลักของเลขที่ซื้อไม่ถูกต้อง");
-				return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
+				LottoApplicationEntity lottoEntity = new LottoApplicationEntity();
+				lottoEntity.setId(UUID.randomUUID().toString());
+				lottoEntity.setRound(round);
+				lottoEntity.setNumber(number);
+				lottoEntity.setType(typeTwo);
+				lottoEntity.setSubType(subTypeUp);
+				lottoEntity.setBuyerName(buyerName);
+				lottoEntity.setSellerName(sellerName);
+				lottoEntity.setPrice(priceA);
+				lottoEntity.setCreated(new Date());
+				lottoEntity.setCreateBy("SYSTEM");
+				lottoApplicationRepository.save(lottoEntity);
 			}
-
-			lottoEntity.setBuyerName(request.getBuyerName());
-
-			lottoEntity.setCreated(new Date());
-			lottoEntity.setCreateBy("system");
-
-			lottoApplicationRepository.save(null);
 		}
 
-		if (StringUtils.isNotBlank(request.getPriceB())) {
-			LottoApplicationEntity lottoEntity = new LottoApplicationEntity();
-			lottoEntity.setId(UUID.randomUUID().toString());
-			lottoEntity.setNumber(request.getNumber());
-			if (request.getNumber().length() == 2) {
-				lottoEntity.setType("2");
-				lottoEntity.setNature("down");
-				lottoEntity.setPrice(priceA);
-			} else if (request.getNumber().length() == 3) {
-				lottoEntity.setType("3");
-				lottoEntity.setNature("tote");
-				lottoEntity.setPrice(priceB);
+		if (number.length() == 2 && priceB > 0) {
+			LottoApplicationEntity lottoApplicationTwoDownEntityList = lottoApplicationRepository.findFirstByRoundAndBuyerNameAndNumberAndTypeAndSubType(round, buyerName, number, typeTwo, subTypeDown);
+			if (lottoApplicationTwoDownEntityList != null) {
+				int price = lottoApplicationTwoDownEntityList.getPrice() + priceB;
+				lottoApplicationTwoDownEntityList.setPrice(price);
+				lottoApplicationRepository.save(lottoApplicationTwoDownEntityList);
 			} else {
-				lottoSaveResponse.setStatus("error");
-				lottoSaveResponse.setErrorMessage("หลักของเลขที่ซื้อไม่ถูกต้อง");
-				return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
+				LottoApplicationEntity lottoEntity = new LottoApplicationEntity();
+				lottoEntity.setId(UUID.randomUUID().toString());
+				lottoEntity.setRound(round);
+				lottoEntity.setNumber(number);
+				lottoEntity.setType(typeTwo);
+				lottoEntity.setSubType(subTypeDown);
+				lottoEntity.setBuyerName(buyerName);
+				lottoEntity.setSellerName(sellerName);
+				lottoEntity.setPrice(priceA);
+				lottoEntity.setCreated(new Date());
+				lottoEntity.setCreateBy(createBy);
+				lottoApplicationRepository.save(lottoEntity);
 			}
-			lottoEntity.setPrice(priceA);
+		}
 
-			lottoEntity.setBuyerName(request.getBuyerName());
+		if (number.length() == 3 && priceA > 0) {
+			LottoApplicationEntity lottoApplicationThreeDirectEntityList = lottoApplicationRepository.findFirstByRoundAndBuyerNameAndNumberAndTypeAndSubType(round, buyerName, number, typeThree, subTypeDirect);
+			if (lottoApplicationThreeDirectEntityList != null) {
+				int price = lottoApplicationThreeDirectEntityList.getPrice() + priceA;
+				lottoApplicationThreeDirectEntityList.setPrice(price);
+				lottoApplicationRepository.save(lottoApplicationThreeDirectEntityList);
+			} else {
+				LottoApplicationEntity lottoEntity = new LottoApplicationEntity();
+				lottoEntity.setId(UUID.randomUUID().toString());
+				lottoEntity.setRound(round);
+				lottoEntity.setNumber(number);
+				lottoEntity.setType(typeThree);
+				lottoEntity.setSubType(subTypeDirect);
+				lottoEntity.setBuyerName(buyerName);
+				lottoEntity.setSellerName(sellerName);
+				lottoEntity.setPrice(priceA);
+				lottoEntity.setCreated(new Date());
+				lottoEntity.setCreateBy(createBy);
+				lottoApplicationRepository.save(lottoEntity);
+			}
+		}
 
-			lottoEntity.setCreated(new Date());
-			lottoEntity.setCreateBy("system");
-
-			lottoApplicationRepository.save(null);
+		if (number.length() == 3 && priceB > 0) {
+			LottoApplicationEntity lottoApplicationThreeToteEntityList = lottoApplicationRepository.findFirstByRoundAndBuyerNameAndNumberAndTypeAndSubType(round, buyerName, number, typeThree, subTypeTote);
+			if (lottoApplicationThreeToteEntityList != null) {
+				int price = lottoApplicationThreeToteEntityList.getPrice() + priceB;
+				lottoApplicationThreeToteEntityList.setPrice(price);
+				lottoApplicationRepository.save(lottoApplicationThreeToteEntityList);
+			} else {
+				LottoApplicationEntity lottoEntity = new LottoApplicationEntity();
+				lottoEntity.setId(UUID.randomUUID().toString());
+				lottoEntity.setRound(round);
+				lottoEntity.setNumber(number);
+				lottoEntity.setType(typeThree);
+				lottoEntity.setSubType(subTypeTote);
+				lottoEntity.setBuyerName(buyerName);
+				lottoEntity.setSellerName(sellerName);
+				lottoEntity.setPrice(priceB);
+				lottoEntity.setCreated(new Date());
+				lottoEntity.setCreateBy(createBy);
+				lottoApplicationRepository.save(lottoEntity);
+			}
 		}
 
 		lottoSaveResponse.setStatus("success");

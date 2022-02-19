@@ -8,4 +8,5 @@ public class LottoSaveRequest {
 	private String priceA;
 	private String priceB;
 	private String buyerName;
+	private String sellerName;
 }

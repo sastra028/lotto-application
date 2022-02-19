@@ -4,37 +4,31 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "lotto-application")
-@IdClass(LottoApplicationEntityKey.class)
+@Table(name = "lotto_application")
 public class LottoApplicationEntity {
 
 	@Id
 	private String id;
 
-	@Id
 	private String round;
-	
-	@Id
+
 	private String number;
 
-	@Id
 	private String type;
 
-	@Id
-	private String nature;
-	
-	@Id
+	private String subType;
+
 	private String buyerName;
+	
+	private String sellerName;
 
 	private int price;
-
 
 	private Date created;
 
