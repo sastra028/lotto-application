@@ -1,46 +1,186 @@
-<div class="search-results-container-history"
-             infinite-scroll
-             (scrolled)="onScrollDownHistory($event)">
+<!-- <div  
+             class="search-results-container"
+             infinite-scroll>
+        <div>
 
-             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <mat-card style="margin-top: 10px; width: 85%; line-height: 24px;" *ngFor="let session of sessionHistory">
-              <mat-card-title *ngIf="islangThai" style="font-size: 20px;">{{session.coursecode}}
-                - {{session.classname}}</mat-card-title>
-              <mat-card-title *ngIf="!islangThai" style="font-size: 20px;">{{session.coursecode}}
-                - {{session.classnameeng}}</mat-card-title>
-              <mat-card-content>
-                <div style="font-size: 16px;" *ngIf="getCurrentLang() == 'th'">
-                  AAA : {{session.acadyear}}
-                </div>
-                <div style="font-size: 16px;" *ngIf="getCurrentLang() !== 'th'">
-                  BBB : {{session.acadyear - 543}}
-                </div>
-                <div style="font-size: 16px;">
-                  CCC : {{session.classdate}}
-                </div>
-                <div style="font-size: 16px;">
-                  DDD : {{session.classtime}}
-                </div>
-                <div style="font-size: 16px;">
-                  EEE : <a style="color: forestgreen;"
-                                                                          *ngIf="session.status">FFF</a>
-                  <a style="color: crimson;"
-                     *ngIf="!session.status">GGG</a>
-                </div>
+            <mat-card class="card-form matcard-bg">
 
-
-                <!-- <mat-icon (click)="openSession(session)" class="myDIV" style="text-align: center; font-size: 35px; margin: 5px 0;">open_in_new</mat-icon> -->
-                <!-- <div class="hide">ดำเนินการต่อ</div> -->
-                <div *ngIf="session.status == 1"
-                     style="
-                          cursor: pointer; ">
-                  <button mat-button style="width: 100%; " (click)="openSession(session)">ดำเนินการ</button>
-                </div>
-              </mat-card-content>
             </mat-card>
+        </div>
+    </div> -->
+
+    <div class="search-results-container"
+             infinite-scroll
+             (scrolled)="onScrollDownFreesearch($event)">
+        <div>
+          <mat-card class="card-form matcard-bg">
+            <div style="width: 80%; ">
+              <form style="padding: 15px;  font-size: 20px;" class="formsearch">
+                
+
+                <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
+                    <input matInput  placeholder="เลข"
+                           [(ngModel)]="formSearch.coursecode" name="coursecode" type="number" min="1" max="999">
+                  </mat-form-field>
+                  <div style="height: 60px; margin: 5px 0; ">
+                    <p *ngIf="formSearch.coursecode == null"
+                       style="font-size: 14px; margin-top: 14px;">เลข</p>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
+                    <input matInput  placeholder="บน/ตรง"
+                           [(ngModel)]="formSearch.coursename" name="coursename" type="number" min="1" max="10000">
+                  </mat-form-field>
+                  <div style="height: 60px; margin: 5px 0; ">
+                    <p *ngIf="formSearch.coursename == null"
+                       style="font-size: 14px; margin-top: 14px;">บน/ตรง</p>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
+                    <input matInput  placeholder="ล่าง/โต๊ท"
+                           [(ngModel)]="formSearch.acadyear" name="acadyear" type="number" min="1" max="10000">
+                  </mat-form-field>
+                  <div style="height: 60px; margin: 5px 0; ">
+                    <p *ngIf="formSearch.acadyear == null"
+                       style="font-size: 14px; margin-top: 14px;">ล่าง/โต๊ท</p>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
+                    <input matInput placeholder="ชื่อ"
+                           [(ngModel)]="formSearch.semester" name="semester" type="text" min="1">
+                  </mat-form-field>
+                  <div style="height: 60px; margin: 5px 0; font-size: 14px;">
+                    <p *ngIf="formSearch.semester == null || formSearch.semester == ''"
+                       class="break-space">ชื่อ</p>
+                  </div>
+                </div>
+
+              </form>
             </div>
 
-            <div class="center-spin">
-              <mat-spinner *ngIf="loadingspin"></mat-spinner>
-            </div>
-          </div>
+            <button mat-raised-button style="height: 40px;
+                            font-size: 20px;" (click)="filterFreesearch()"
+                    [disabled]="formSearch.semester == null || formSearch.acadyear == null"><mat-icon>save_alt</mat-icon>&nbsp;บันทึก&nbsp;</button>
+
+
+          </mat-card>
+          <div class="search-results-container-history"
+          infinite-scroll
+          (scrolled)="onScrollDownHistory($event)">
+
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <mat-card style="margin-top: 10px; width: 85%; line-height: 24px;" *ngFor="let data of billList">
+              <mat-card-title  style="font-size: 20px;">{{data.billId}} - {{data.name}} - {{data.update}}</mat-card-title>
+              <mat-card-content>
+                <div style="display: flex; flex-direction: row;">
+
+                <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
+                  <mat-card-title  style="font-size: 20px;">2 ตัว <span style="color: red;">บน</span></mat-card-title>
+                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listTwoUp">
+                    <div style="display: flex;">
+                      
+                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                      <div  *ngIf="!list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+
+                    </div>
+                  </mat-card>
+                  <br>
+                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.listTwoUpTotal}}</span> บาท</mat-card-title>
+                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.listTwoUpPrize}}</span> บาท</mat-card-title>
+                </mat-card>
+
+                <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
+                  <mat-card-title  style="font-size: 20px;">2 ตัว <span style="color: red;">ล่าง</span></mat-card-title>
+                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listTwoDown">
+                    <div style="display: flex;">
+                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                      <div  *ngIf="!list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                  <br>
+                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.listTwoDownTotal}}</span> บาท</mat-card-title>
+                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.listTwoDownPrize}}</span> บาท</mat-card-title>
+                </mat-card>
+
+              </div>
+
+              <br>
+              <div style="display: flex; flex-direction: row;">
+
+                <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
+                  <mat-card-title  style="font-size: 20px;">3 ตัว <span style="color: red;">ตรง</span></mat-card-title>
+                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listThreeDirect">
+                    <div style="display: flex;">
+                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                      <div  *ngIf="!list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                  <br>
+                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.listThreeDirectTotal}}</span> บาท</mat-card-title>
+                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.listThreeDirectPrize}}</span> บาท</mat-card-title>
+                </mat-card>
+
+                <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
+                  <mat-card-title  style="font-size: 20px;">3 ตัว <span style="color: red;">โต๊ท</span></mat-card-title>
+                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listThreeTote">
+                    <div style="display: flex;">
+                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                      <div  *ngIf="!list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                  <br>
+                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.listThreeToteTotal}}</span> บาท</mat-card-title>
+                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.listThreeTotePrize}}</span> บาท</mat-card-title>
+                </mat-card>
+
+              </div>
+              <br>
+              
+              <mat-card-title  style="font-size: 20px;">ซื้อทั้งหมด <span style="color: red;">{{data.listTotal}}</span> บาท</mat-card-title>
+              <mat-card-title  style="font-size: 20px;">ถูกทั้งหมด <span style="color: green;">{{data.prizeTotal}}</span> บาท</mat-card-title>
+              
+            </mat-card-content>
+          </mat-card>
+         </div>
+
+         <div class="center-spin">
+           <mat-spinner ></mat-spinner>
+         </div>
+       </div>
+      <div class="center-spin">
+        <mat-spinner ></mat-spinner>
+      </div>
+   </div>
+
+
+   <br>
+   <br>
+   <br>
+   <br>
+
+
+
+
