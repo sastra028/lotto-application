@@ -20,7 +20,7 @@ import com.lotto.lottoapi.entity.LottoLimitEntity;
 import com.lotto.lottoapi.repository.LottoApplicationRepository;
 import com.lotto.lottoapi.repository.LottoLimitRepository;
 import com.lotto.lottoapi.request.ReportTwoRequest;
-import com.lotto.lottoapi.response.LottoTwoListResponse;
+import com.lotto.lottoapi.response.CommondResponse;
 import com.lotto.lottoapi.response.ReportTwoDetail;
 import com.lotto.lottoapi.response.ReportTwoResponse;
 
@@ -46,14 +46,33 @@ public class LottoApplicationRepostController {
 	@PostMapping(path = "/two", produces = "application/json")
 	public @ResponseBody ResponseEntity<?> reportTwo(@RequestBody ReportTwoRequest request) {
 
-		List<LottoLimitEntity> lottoLimitEntityList = new ArrayList<>();
 		HashMap<String, Integer> limit = new HashMap<String, Integer>();
-		if (StringUtils.isNotBlank(request.getRound()) && StringUtils.isNotBlank(request.getSellerName())) {
-			lottoLimitEntityList = lottoLimitRepository.findByRoundAndSellerName(request.getRound(), request.getSellerName());
-			for (LottoLimitEntity lottoLimitEntity : lottoLimitEntityList) {
-				limit.put(lottoLimitEntity.getNumber() + "-" + lottoLimitEntity.getType() + "-" + lottoLimitEntity.getSubtype(), lottoLimitEntity.getLimitPrice());
 
-			}
+		if (StringUtils.isNotBlank(request.getRound())) {
+			CommondResponse commondResponse = new CommondResponse();
+			commondResponse.setStatus("error");
+			commondResponse.setErrorMessage("กรุณาระบุงวด");
+			return new ResponseEntity<>(commondResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		if (StringUtils.isNotBlank(request.getRound())) {
+			CommondResponse commondResponse = new CommondResponse();
+			commondResponse.setStatus("error");
+			commondResponse.setErrorMessage("กรุณาระบุผู้ขาย");
+			return new ResponseEntity<>(commondResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		List<LottoLimitEntity> lottoLimitEntityList = lottoLimitRepository.findByRoundAndSellerName(request.getRound(), request.getSellerName());
+
+		if (lottoLimitEntityList.isEmpty()) {
+			CommondResponse commondResponse = new CommondResponse();
+			commondResponse.setStatus("error");
+			commondResponse.setErrorMessage("ไม่พบข้อมูลในระบบ");
+			return new ResponseEntity<>(commondResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		for (LottoLimitEntity lottoLimitEntity : lottoLimitEntityList) {
+			limit.put(lottoLimitEntity.getNumber() + "-" + lottoLimitEntity.getType() + "-" + lottoLimitEntity.getSubtype(), lottoLimitEntity.getLimitPrice());
 		}
 
 		ReportTwoResponse reportTowResponse = new ReportTwoResponse();
@@ -64,7 +83,7 @@ public class LottoApplicationRepostController {
 		HashMap<String, LottoApplicationEntity> listUp = new HashMap<String, LottoApplicationEntity>();
 		HashMap<String, LottoApplicationEntity> listDown = new HashMap<String, LottoApplicationEntity>();
 
-		List<LottoApplicationEntity> lottoApplicationEntityList = lottoApplicationRepository.findBytype(typeTwo);
+		List<LottoApplicationEntity> lottoApplicationEntityList = lottoApplicationRepository.findBytypeAndSellerNameAndRound(typeTwo, request.getSellerName(), request.getRound());
 		for (LottoApplicationEntity lottoApplicationEntity : lottoApplicationEntityList) {
 
 			String number = lottoApplicationEntity.getNumber();
@@ -119,6 +138,8 @@ public class LottoApplicationRepostController {
 		reportTowResponse.setList(ReportTwoDetailList);
 		reportTowResponse.setOver(over);
 		reportTowResponse.setSum(sum);
+		reportTowResponse.setSallerName(request.getSellerName());
+		reportTowResponse.setRound(request.getRound());
 
 		return new ResponseEntity<>(reportTowResponse, HttpStatus.OK);
 	}

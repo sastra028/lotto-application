@@ -9,4 +9,7 @@ public class ReportTwoResponse {
 	private List<ReportTwoDetail> list;
 	private int sum;
 	private int over;
+	private String sallerName;
+	private String round;
+
 }

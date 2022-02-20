@@ -20,4 +20,5 @@ public interface LottoApplicationRepository extends JpaRepository<LottoApplicati
 	List<String> findBuyerName();
 	
 	List<LottoApplicationEntity> findBytype(String type);	
+	List<LottoApplicationEntity> findBytypeAndSellerNameAndRound(String type, String sellerName, String round);	
 }
