@@ -16,12 +16,12 @@
       <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
         <div style="font-size: 18px;" >{{list.number}}</div>       
       </mat-card>
-      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+      <mat-card *ngIf="!list.upMax" style="margin-top: 10px; line-height: 24px; width: 35%;">
         <div style="display: flex; flex-direction: row;">
-          <div *ngIf="list.upMax">
+          <div *ngIf="list.up > 0">
             <div style="font-size: 18px; color: red;" >{{list.up }}</div>  
           </div>
-          <div *ngIf="!list.upMax">
+          <div *ngIf="list.up == 0">
             <div style="font-size: 18px;" >{{list.up }}</div>  
           </div>
           <div *ngIf="list.upMax > 0">
@@ -29,12 +29,19 @@
           </div>   
         </div>    
       </mat-card>
-      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+      <mat-card *ngIf="list.upMax" style="margin-top: 10px; line-height: 24px; width: 35%; background-color: coral;">
         <div style="display: flex; flex-direction: row;">
-          <div *ngIf="list.downMax">
-            <div style="font-size: 18px; color: red;" >{{list.up }}</div>  
+          <div style="font-size: 18px; color: red;" >{{list.up }}</div>  
+          <div style="font-size: 18px;" >{{list.up }}</div>  
+          <div style="font-size: 18px;" >&nbsp;({{list.upLimit }})</div>   
+        </div>    
+      </mat-card>
+      <mat-card *ngIf="!list.downMax" style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="display: flex; flex-direction: row;">
+          <div *ngIf="list.down > 0">
+            <div style="font-size: 18px; color: red;" >{{list.down }}</div>  
           </div>
-          <div *ngIf="!list.downMax">
+          <div *ngIf="list.down == 0">
             <div style="font-size: 18px;" >{{list.down }}</div>  
           </div>
           <div *ngIf="list.downMax > 0">
@@ -42,6 +49,13 @@
           </div>  
         </div>
       </mat-card>       
+      <mat-card *ngIf="list.downMax" style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="display: flex; flex-direction: row;">
+          <div style="font-size: 18px; color: red;" >{{list.up }}</div>  
+          <div style="font-size: 18px;" >{{list.down }}</div>  
+          <div style="font-size: 18px;" >&nbsp;({{list.downLimit }})</div>   
+        </div>
+      </mat-card>   
     </div>
   </mat-card>
   <mat-card style="margin-top: 10px; width: 85%; line-height: 24px;" >
