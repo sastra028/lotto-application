@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ApiService } from 'src/app/services/api.service';
+import { AlertDialogComponent } from 'src/app/component/alert-dialog/alert-dialog.component';
+import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: 'app-list-two',
   templateUrl: './list-two.component.html',
@@ -253,9 +256,12 @@ export class ListTwoComponent implements OnInit {
 
   ];
 
-  constructor() { }
+  constructor(
+    private apiService: ApiService,
+    private dialog: MatDialog,) { }
 
   ngOnInit(): void {
+    this.loadData();
   }
 
   async onScrollDownFreesearch(ev: any) {
@@ -297,5 +303,18 @@ export class ListTwoComponent implements OnInit {
 
   unConfirm(buyerName: any){
     
+  }
+
+  loadData(){
+    this.apiService.getReportTwo()
+    .subscribe( {
+      next: async (results) => {
+        console.log('results 2: '+results);
+        this.reportTwo = results;
+      },
+      error: async (error) => {
+        console.log(error);
+      }
+    });
   }
 }

@@ -83,4 +83,10 @@ export class ApiService {
         {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
+  getReportTwo(): Observable<any> {
+    return this.http
+      .post(`${API_URL}/api/v2/lotto/report/two`,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
 }
