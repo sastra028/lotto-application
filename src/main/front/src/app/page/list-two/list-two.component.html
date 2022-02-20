@@ -1,94 +1,75 @@
-<!-- <div  
-             class="search-results-container"
-             infinite-scroll>
-        <div>
 
-            <mat-card class="card-form matcard-bg">
-
-            </mat-card>
-        </div>
-    </div> -->
-
-    <div class="search-results-container"
-             infinite-scroll
-             (scrolled)="onScrollDownFreesearch($event)">
-        <div>
-          <mat-card class="card-form matcard-bg">
-            <div style="width: 80%; ">
-              <form style="padding: 15px;  font-size: 20px;" class="formsearch">
-                <div style="display: flex; flex-direction: column; margin-right: 40px;">
-                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
-                    <input matInput placeholder="AAA1"
-                           [(ngModel)]="formSearch.coursecode" name="coursecode" type="text">
-                  </mat-form-field>
-                  <div style="height: 60px; margin: 5px 0; font-size: 14px; ">
-                    <p *ngIf="formSearch.coursecode == undefined || formSearch.coursecode == ''"
-                       class="break-space">AAAA2</p>
-                  </div>
-
-                </div>
-                <div style="display: flex; flex-direction: column; margin-right: 40px;">
-                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
-                    <input matInput placeholder="BBB1"
-                           [(ngModel)]="formSearch.coursename" name="coursename" type="text">
-                  </mat-form-field>
-                  <div style="height: 60px; margin: 5px 0; font-size: 14px;">
-                    <p *ngIf="formSearch.coursename == null || formSearch.coursename == ''"
-                       class="break-space">BBB2</p>
-                  </div>
-
-                </div>
-                <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
-                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
-                    <input matInput required="true" placeholder="CCC1"
-                           [(ngModel)]="formSearch.acadyear" name="acadyear" type="number" min="1">
-                  </mat-form-field>
-                  <div style="height: 60px; margin: 5px 0; ">
-                    <p *ngIf="formSearch.acadyear == null"
-                       style="color: red; font-size: 14px; margin-top: 14px;">CCC2</p>
-                  </div>
-                </div>
-                <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
-                  <mat-form-field class="search-full-width" style="margin-right: 25px;">
-                    <input matInput required="true" placeholder="DDD1"
-                           [(ngModel)]="formSearch.semester" name="semester" type="number" min="1">
-                  </mat-form-field>
-                  <div style="height: 60px; margin: 5px 0; ">
-                    <p *ngIf="formSearch.semester == null"
-                       style="color: red; font-size: 14px; margin-top: 14px;">DDD2</p>
-                  </div>
-                </div>
-
-              </form>
-            </div>
-
-            <button mat-raised-button style="height: 40px;
-                            font-size: 20px;" (click)="filterFreesearch()"
-                    [disabled]="formSearch.semester == null || formSearch.acadyear == null"><mat-icon>search</mat-icon>EEE1</button>
-
-
-          </mat-card>
-        </div>
-        
-          <div class="center">
-            <div class="resultsearch">
-              <div *ngFor="let item of classes">
-                <mat-card class="itemsearch" (click)="select(item)">
-                  <mat-card-title style="
-                              line-height: 25px;"><b> {{ item.display_course_code }} </b></mat-card-title>
-                  <mat-card-content style="font-size: 19px">
-                    <div style="margin-bottom: 4px;">{{ getCourseName(item) }}</div>
-                    <div
-                      style="margin-bottom: 4px;">FFF2 {{ item.semester }}
-                      /{{ toDisplayYear(item.acadyear) }}</div>
-                    <div style="margin-bottom: 4px;">{{ item.classtime }}</div>
-                  </mat-card-content>
-                </mat-card>
-              </div> 
-            </div>
-            
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+  <mat-card style="margin-top: 10px; width: 85%; line-height: 24px;" >
+    <div style="display: flex; flex-direction: row;">
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="font-size: 18px;" >เลข</div>            
+      </mat-card>
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="font-size: 18px;" >บน</div>          
+      </mat-card>
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="font-size: 18px;" >ล่าง</div>          
+      </mat-card>    
+    </div>
+    <div style="display: flex; flex-direction: row;" *ngFor="let list of reportTwo.list">
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="font-size: 18px;" >{{list.number}}</div>       
+      </mat-card>
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="display: flex; flex-direction: row;">
+          <div *ngIf="list.upMax">
+            <div style="font-size: 18px; color: red;" >{{list.up }}</div>  
           </div>
-          <div class="center-spin">
-            <mat-spinner *ngIf="loadingspin"></mat-spinner>
+          <div *ngIf="!list.upMax">
+            <div style="font-size: 18px;" >{{list.up }}</div>  
           </div>
+          <div *ngIf="list.upMax > 0">
+            <div style="font-size: 18px;" >&nbsp;({{list.upLimit }})</div>   
+          </div>   
+        </div>    
+      </mat-card>
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 35%;">
+        <div style="display: flex; flex-direction: row;">
+          <div *ngIf="list.downMax">
+            <div style="font-size: 18px; color: red;" >{{list.up }}</div>  
+          </div>
+          <div *ngIf="!list.downMax">
+            <div style="font-size: 18px;" >{{list.down }}</div>  
+          </div>
+          <div *ngIf="list.downMax > 0">
+            <div style="font-size: 18px;" >&nbsp;({{list.downLimit }})</div>   
+          </div>  
         </div>
+      </mat-card>       
+    </div>
+  </mat-card>
+  <mat-card style="margin-top: 10px; width: 85%; line-height: 24px;" >
+    <div style="display: flex; flex-direction: row;">
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 25%;">
+        <div style="font-size: 18px;" >รวม</div>            
+      </mat-card>
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 75%;">
+        <div style="font-size: 18px;" >{{reportTwo.sum}}&nbsp;บาท</div>          
+      </mat-card>
+    </div>
+    <div style="display: flex; flex-direction: row;">
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 25%;">
+        <div style="font-size: 18px;" >เกินยอด</div>            
+      </mat-card>
+      <mat-card style="margin-top: 10px; line-height: 24px; width: 75%;">
+        <div style="font-size: 18px; color: red;" >{{reportTwo.over}}&nbsp;บาท</div>          
+      </mat-card>
+    </div>
+  </mat-card>
+  
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

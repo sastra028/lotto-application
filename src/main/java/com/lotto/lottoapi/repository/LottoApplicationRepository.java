@@ -18,4 +18,6 @@ public interface LottoApplicationRepository extends JpaRepository<LottoApplicati
 
 	@Query("SELECT c.buyerName FROM LottoApplicationEntity AS c GROUP BY c.buyerName ORDER BY c.buyerName DESC")
 	List<String> findBuyerName();
+	
+	List<LottoApplicationEntity> findBytype(String type);	
 }
