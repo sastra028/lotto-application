@@ -23,7 +23,9 @@ body {
 
 .container {
   min-height: 100%;
-  background: #fff url("../../../assets/bg/bg-content-whitefilled-bright.jpg") no-repeat center bottom / cover;
+  /* background: #fff url("../../../assets/bg/bg-content-whitefilled-bright.jpg") no-repeat center bottom / cover; */
+  background: #fff url("../../../assets/bg/bg-new.jpg") no-repeat center bottom / cover;
+  /* background: darkturquoise */
 }
 
 
