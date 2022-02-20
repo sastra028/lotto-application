@@ -199,7 +199,7 @@ public class LottoApplicationController {
 		return new ResponseEntity<>(billListResponseList, HttpStatus.OK);
 	}
 
-	@PostMapping(path = "/save", produces = {"application/json"})
+	@PostMapping(path = "/save", produces = { "application/json" })
 	public @ResponseBody ResponseEntity<?> save(@RequestBody @Valid LottoSaveRequest request) {
 
 		LottoSaveResponse lottoSaveResponse = new LottoSaveResponse();
@@ -216,6 +216,14 @@ public class LottoApplicationController {
 		if (StringUtils.isBlank(request.getNumber())) {
 			lottoSaveResponse.setStatus("error");
 			lottoSaveResponse.setErrorMessage("กรุณาระบุเลขที่ซื้อ");
+			return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		try {
+			Integer.parseInt(number);
+		} catch (Exception e) {
+			lottoSaveResponse.setStatus("error");
+			lottoSaveResponse.setErrorMessage("ระบุเลขไม่ถูกต้อง");
 			return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
 		}
 

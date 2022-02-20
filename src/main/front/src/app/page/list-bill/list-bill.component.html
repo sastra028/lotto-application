@@ -80,51 +80,31 @@
               <mat-card-title  style="font-size: 20px;">{{data.billId}} - {{data.name}} - {{data.update}}</mat-card-title>
               <mat-card-content>
                 <div style="display: flex; flex-direction: row;">
-
+                
                 <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
-                  <mat-card-title  style="font-size: 20px;">2 ตัว <span style="color: red;">บน</span></mat-card-title>
-                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listTwoUp">
-                    <div style="display: flex;">
-                      
-                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
-                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
-                      </div>
-                      <div  *ngIf="!list.prize" >
-                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
-                      </div>
-                      <span>&nbsp;</span>
-                      <div  *ngIf="!data.lock" >
-                        <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
-                      </div>
+                    <mat-card-title  style="font-size: 20px;">2 ตัว <span style="color: red;">บน</span></mat-card-title>
+                    <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listTwoUp">
+                      <div style="display: flex;">
+                        
+                        <div style="background-color: greenyellow;" *ngIf="list.prize" >
+                          <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                        </div>
+                        <div  *ngIf="!list.prize" >
+                          <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                        </div>
+                        <span>&nbsp;</span>
+                        <div  *ngIf="!data.lock" >
+                          <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
+                        </div>
 
+                      </div>
+                    </mat-card>
+                    <br>
+                    <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.twoUpTotal}}</span> บาท</mat-card-title>
+                    <div *ngIf="data.twoUpPrize > 0">
+                      <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.twoUpPrize}}</span> บาท</mat-card-title>
                     </div>
-                  </mat-card>
-                  <br>
-                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.twoUpTotal}}</span> บาท</mat-card-title>
-                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.twoUpPrize}}</span> บาท</mat-card-title>
                 </mat-card>
-
-                <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
-                  <mat-card-title  style="font-size: 20px;">2 ตัว <span style="color: red;">ล่าง</span></mat-card-title>
-                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listTwoDown">
-                    <div style="display: flex;">
-                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
-                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
-                      </div>
-                      <div  *ngIf="!list.prize" >
-                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
-                      </div>
-                    </div>
-                  </mat-card>
-                  <br>
-                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.twoDownTotal}}</span> บาท</mat-card-title>
-                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.twoDownPrize}}</span> บาท</mat-card-title>
-                </mat-card>
-
-              </div>
-
-              <br>
-              <div style="display: flex; flex-direction: row;">
 
                 <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
                   <mat-card-title  style="font-size: 20px;">3 ตัว <span style="color: red;">ตรง</span></mat-card-title>
@@ -140,7 +120,32 @@
                   </mat-card>
                   <br>
                   <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.threeDirectTotal}}</span> บาท</mat-card-title>
-                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.threeDirectPrize}}</span> บาท</mat-card-title>
+                  <div *ngIf="data.threeDirectPrize > 0"> 
+                    <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.threeDirectPrize}}</span> บาท</mat-card-title>
+                  </div>
+                </mat-card>
+
+              </div>
+
+              <br>
+              <div style="display: flex; flex-direction: row;">
+                <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
+                  <mat-card-title  style="font-size: 20px;">2 ตัว <span style="color: red;">ล่าง</span></mat-card-title>
+                  <mat-card style="margin-top: 10px; line-height: 24px;" *ngFor="let list of data.listTwoDown">
+                    <div style="display: flex;">
+                      <div style="background-color: greenyellow;" *ngIf="list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                      <div  *ngIf="!list.prize" >
+                        <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                  <br>
+                  <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.twoDownTotal}}</span> บาท</mat-card-title>
+                  <div *ngIf="data.twoDownPrize > 0">
+                    <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.twoDownPrize}}</span> บาท</mat-card-title>
+                  </div>
                 </mat-card>
 
                 <mat-card style="margin-top: 10px; width: 50%; line-height: 24px;">
@@ -157,14 +162,19 @@
                   </mat-card>
                   <br>
                   <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.threeToteTotal}}</span> บาท</mat-card-title>
-                  <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.threeTotePrize}}</span> บาท</mat-card-title>
+                  <div *ngIf="data.threeTotePrize > 0"> 
+                    <mat-card-title  style="font-size: 20px;">ถูก <span style="color: green;">{{data.threeTotePrize}}</span> บาท</mat-card-title>
+                  </div>                  
                 </mat-card>
 
               </div>
               <br>
               
               <mat-card-title  style="font-size: 20px;">ซื้อทั้งหมด <span style="color: red;">{{data.priceTotal}}</span> บาท</mat-card-title>
-              <mat-card-title  style="font-size: 20px;">ถูกทั้งหมด <span style="color: green;">{{data.prizeTotal}}</span> บาท</mat-card-title>
+              <div *ngIf="data.threeTotePrize > 0"> 
+                <mat-card-title  style="font-size: 20px;">ถูกทั้งหมด <span style="color: green;">{{data.threeTotePrize}}</span> บาท</mat-card-title>
+              </div>
+              
               <div *ngIf="!data.lock"> 
                 <button mat-stroked-button color="warn" (click)="confirm(data.name)">ยืนยัน</button>
               </div>
