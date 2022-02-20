@@ -92,6 +92,10 @@
                       <div  *ngIf="!list.prize" >
                         <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
                       </div>
+                      <span>&nbsp;</span>
+                      <div  *ngIf="!data.lock" >
+                        <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
+                      </div>
 
                     </div>
                   </mat-card>
@@ -161,7 +165,12 @@
               
               <mat-card-title  style="font-size: 20px;">ซื้อทั้งหมด <span style="color: red;">{{data.priceTotal}}</span> บาท</mat-card-title>
               <mat-card-title  style="font-size: 20px;">ถูกทั้งหมด <span style="color: green;">{{data.prizeTotal}}</span> บาท</mat-card-title>
-              
+              <div *ngIf="!data.lock"> 
+                <button mat-stroked-button color="warn" (click)="confirm(data.name)">ยืนยัน</button>
+              </div>
+              <div *ngIf="data.lock"> 
+                <button mat-stroked-button color="warn" (click)="unConfirm(data.name)">แก้ไข</button>
+              </div>
             </mat-card-content>
           </mat-card>
          </div>

@@ -18,5 +18,7 @@ public class BillEntity {
 	private String sellerName;
 	private Date updated;
 	private Date created;
+	private boolean lock;
+	private Date lockDate;
 	private String note;
 }

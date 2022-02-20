@@ -9,6 +9,7 @@ public class BillListResponse {
 	private long billId;
 	private String name;
 	private String update;
+	private boolean lock;
 	
 	private int twoUpTotal;
 	private int twoUpPrize;

@@ -5,12 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.Id;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,18 +22,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lotto.lottoapi.dto.LottoGroupPrice;
 import com.lotto.lottoapi.entity.BillEntity;
 import com.lotto.lottoapi.entity.LottoApplicationEntity;
-import com.lotto.lottoapi.entity.LottoEntity;
 import com.lotto.lottoapi.entity.RewardEntity;
 import com.lotto.lottoapi.repository.BillRepository;
 import com.lotto.lottoapi.repository.LottoApplicationRepository;
 import com.lotto.lottoapi.repository.LottoRepository;
 import com.lotto.lottoapi.repository.RewardRepository;
+import com.lotto.lottoapi.request.ConfirmBillRequest;
+import com.lotto.lottoapi.request.DeleteRequest;
 import com.lotto.lottoapi.request.LottoSaveRequest;
+import com.lotto.lottoapi.request.UnConfirmBillRequest;
 import com.lotto.lottoapi.response.BillDetial;
 import com.lotto.lottoapi.response.BillListResponse;
+import com.lotto.lottoapi.response.DeleteResponse;
 import com.lotto.lottoapi.response.LottoSaveResponse;
 import com.lotto.lottoapi.utils.CommonUtils;
 
@@ -107,6 +107,7 @@ public class LottoApplicationController {
 			List<LottoApplicationEntity> lottoApplicationTwoUpEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeTwo, subTypeUp);
 			for (LottoApplicationEntity lottoApplicationTwoUpEntity : lottoApplicationTwoUpEntityList) {
 				BillDetial billDetial = new BillDetial();
+				billDetial.setId(lottoApplicationTwoUpEntity.getId());
 				billDetial.setNumber(lottoApplicationTwoUpEntity.getNumber());
 				billDetial.setPrice(lottoApplicationTwoUpEntity.getPrice());
 				if (StringUtils.isNotBlank(rewardTwoUp) && rewardTwoUp.equals(lottoApplicationTwoUpEntity.getNumber())) {
@@ -120,6 +121,7 @@ public class LottoApplicationController {
 			List<LottoApplicationEntity> lottoApplicationTwoDownEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeTwo, subTypeDown);
 			for (LottoApplicationEntity entity : lottoApplicationTwoDownEntityList) {
 				BillDetial billDetial = new BillDetial();
+				billDetial.setId(entity.getId());
 				billDetial.setNumber(entity.getNumber());
 				billDetial.setPrice(entity.getPrice());
 				if (StringUtils.isNotBlank(rewardTwoDown) && rewardTwoDown.equals(entity.getNumber())) {
@@ -133,6 +135,7 @@ public class LottoApplicationController {
 			List<LottoApplicationEntity> lottoApplicationThreeDirectEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeThree, subTypeDirect);
 			for (LottoApplicationEntity entity : lottoApplicationThreeDirectEntityList) {
 				BillDetial billDetial = new BillDetial();
+				billDetial.setId(entity.getId());
 				billDetial.setNumber(entity.getNumber());
 				billDetial.setPrice(entity.getPrice());
 				if (StringUtils.isNotBlank(rewardThree) && rewardThree.equals(entity.getNumber())) {
@@ -146,6 +149,7 @@ public class LottoApplicationController {
 			List<LottoApplicationEntity> lottoApplicationThreeToteEntityList = lottoApplicationRepository.findByBuyerNameAndTypeAndSubType(billEntity.getBuyerName(), typeThree, subTypeTote);
 			for (LottoApplicationEntity entity : lottoApplicationThreeToteEntityList) {
 				BillDetial billDetial = new BillDetial();
+				billDetial.setId(entity.getId());
 				billDetial.setNumber(entity.getNumber());
 				billDetial.setPrice(entity.getPrice());
 				if (!rewardTote.isEmpty() && rewardTote.contains(entity.getNumber())) {
@@ -160,6 +164,7 @@ public class LottoApplicationController {
 			BillListResponse billListResponse = new BillListResponse();
 			billListResponse.setBillId(billEntity.getId());
 			billListResponse.setName(billEntity.getBuyerName());
+			billListResponse.setLock(billEntity.isLock());
 
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
 			String updated = dateFormat.format(billEntity.getUpdated());
@@ -193,7 +198,6 @@ public class LottoApplicationController {
 
 		return new ResponseEntity<>(billListResponseList, HttpStatus.OK);
 	}
-
 
 	@PostMapping(path = "/save")
 	public @ResponseBody ResponseEntity<?> save(@RequestBody @Valid LottoSaveRequest request) {
@@ -247,6 +251,33 @@ public class LottoApplicationController {
 //			return new ResponseEntity<>("ราคา ล้าง/โต๊ท ไม่ถูกต้อง", HttpStatus.BAD_REQUEST);
 		}
 
+		Optional<BillEntity> billEntityOptional = billRepository.findById(buyerName);
+		if (billEntityOptional.isPresent()) {
+			BillEntity billEntity = billEntityOptional.get();
+			if (billEntity.isLock()) {
+				lottoSaveResponse.setStatus("error");
+				lottoSaveResponse.setErrorMessage("บิลนี้ถูกล็อคแล้ว");
+				return new ResponseEntity<>(lottoSaveResponse, HttpStatus.BAD_REQUEST);
+			}
+
+			billEntity.setUpdated(new Date());
+			billRepository.save(billEntity);
+		} else {
+			Long id = billRepository.findMaxId();
+			if (id == null) {
+				id = 0l;
+			}
+			BillEntity billEntity = new BillEntity();
+			billEntity.setId(id++);
+			billEntity.setBuyerName(buyerName);
+			billEntity.setSellerName(sellerName);
+			billEntity.setUpdated(new Date());
+			billEntity.setCreated(new Date());
+			billEntity.setNote("");
+			billEntity.setUpdated(new Date());
+			billRepository.save(billEntity);
+		}
+
 		if (number.length() == 2 && priceA > 0) {
 			LottoApplicationEntity lottoApplicationTwoUpEntity = lottoApplicationRepository.findFirstByRoundAndBuyerNameAndNumberAndTypeAndSubType(round, buyerName, number, typeTwo, subTypeUp);
 			if (lottoApplicationTwoUpEntity != null) {
@@ -284,7 +315,7 @@ public class LottoApplicationController {
 				lottoEntity.setSubType(subTypeDown);
 				lottoEntity.setBuyerName(buyerName);
 				lottoEntity.setSellerName(sellerName);
-				lottoEntity.setPrice(priceA);
+				lottoEntity.setPrice(priceB);
 				lottoEntity.setCreated(new Date());
 				lottoEntity.setCreateBy(createBy);
 				lottoApplicationRepository.save(lottoEntity);
@@ -335,30 +366,102 @@ public class LottoApplicationController {
 			}
 		}
 
-		Optional<BillEntity> billEntityOptional = billRepository.findById(buyerName);
-		if (billEntityOptional.isPresent()) {
-			BillEntity billEntity = billEntityOptional.get();
-			billEntity.setUpdated(new Date());
-			billRepository.save(billEntity);
-		} else {
-			Long id = billRepository.findMaxId();
-			if (id == null) {
-				id = 0l;
-			}
-			BillEntity billEntity = new BillEntity();
-			billEntity.setId(id++);
-			billEntity.setBuyerName(buyerName);
-			billEntity.setSellerName(sellerName);
-			billEntity.setUpdated(new Date());
-			billEntity.setCreated(new Date());
-			billEntity.setNote("");
-			billEntity.setUpdated(new Date());
-			billRepository.save(billEntity);
-		}
-
 		lottoSaveResponse.setStatus("success");
 
 		return new ResponseEntity<>(lottoSaveResponse, HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/delete", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> delete(@RequestBody DeleteRequest deleteRequest) {
+		DeleteResponse deleteResponse = new DeleteResponse();
+		if (StringUtils.isBlank(deleteRequest.getLottoApplicationId())) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("คำขอไม่สมบูรณ์");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		Optional<LottoApplicationEntity> lottoApplicationEntityOptional = lottoApplicationRepository.findById(deleteRequest.getLottoApplicationId());
+
+		if (!lottoApplicationEntityOptional.isPresent()) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("บิลนี้ถูกล็อคแล้ว");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		lottoApplicationRepository.delete(lottoApplicationEntityOptional.get());
+
+		deleteResponse.setStatus("success");
+
+		return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/confirm", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> confirm(@RequestBody ConfirmBillRequest request) {
+
+		DeleteResponse deleteResponse = new DeleteResponse();
+		if (StringUtils.isBlank(request.getBuyerName())) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("คำขอไม่สมบูรณ์");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		Optional<BillEntity> billEntityOptional = billRepository.findById(request.getBuyerName());
+
+		if (!billEntityOptional.isPresent()) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("ไม่พบบิลผู้ใช้ในระบบ");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		BillEntity billEntity = billEntityOptional.get();
+		if (billEntity.isLock()) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("บิลนี้ถูกล็อคอยู่แล้ว");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		billEntity.setLock(true);
+		billEntity.setLockDate(new Date());
+
+		billRepository.save(billEntity);
+
+		deleteResponse.setStatus("success");
+
+		return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/unConfirm", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> unConfirm(@RequestBody UnConfirmBillRequest request) {
+
+		DeleteResponse deleteResponse = new DeleteResponse();
+		if (StringUtils.isBlank(request.getBuyerName())) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("คำขอไม่สมบูรณ์");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		Optional<BillEntity> billEntityOptional = billRepository.findById(request.getBuyerName());
+		if (!billEntityOptional.isPresent()) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("ไม่พบบิลผู้ใช้ในระบบ");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		BillEntity billEntity = billEntityOptional.get();
+		if (!billEntity.isLock()) {
+			deleteResponse.setStatus("error");
+			deleteResponse.setErrorMessage("บิลนี้ยังไม่ถูกล็อค");
+			return new ResponseEntity<>(deleteResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		billEntity.setLock(false);
+		billEntity.setLockDate(null);
+
+		billRepository.save(billEntity);
+
+		deleteResponse.setStatus("success");
+
+		return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
 	}
 
 }

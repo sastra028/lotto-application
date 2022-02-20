@@ -84,4 +84,27 @@ export class ApiService {
       }));
   }
 
+  lottoApplicationDelete(form:any): Observable<any> {
+    const params = JSON.stringify(form);
+    return this.http
+      .post(`${API_URL}/api/v2/lotto/delete`, params,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
+  
+  confirmBill(form:any): Observable<any> {
+    const params = JSON.stringify(form);
+    return this.http
+      .post(`${API_URL}/api/v2/lotto/confirm`, params,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
+  
+  unConfirmBill(form:any): Observable<any> {
+    const params = JSON.stringify(form);
+    return this.http
+      .post(`${API_URL}/api/v2/lotto/unConfirm`, params,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
 }

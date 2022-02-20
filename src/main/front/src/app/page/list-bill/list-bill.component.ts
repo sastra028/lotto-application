@@ -259,7 +259,6 @@ export class ListBillComponent implements OnInit {
 
 
   save(){
-    console.log('saveeeeeeee');
     this.apiService.lottoApplicationSave(this.formSearch)
     .subscribe( {
       next: async (response) => {
@@ -283,6 +282,61 @@ export class ListBillComponent implements OnInit {
       },
       error: async (error) => {
         console.log('error');
+      }
+    });
+  }
+
+  delete(applicationId: any){
+    let param = {
+      lottoApplicationId : applicationId
+    }
+    this.apiService.lottoApplicationDelete(param)
+    .subscribe( {
+      next: async (response) => {
+          this.getBill();
+      },
+      error: async (error) => {
+        this.dialog.open(AlertDialogComponent, {
+          width: '350px',
+          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+        })
+      }
+    });
+  }
+
+  confirm(buyerName: any){
+    console.log(buyerName);
+    let param = {
+      buyerName : buyerName
+    }
+    this.apiService.confirmBill(param)
+    .subscribe( {
+      next: async (response) => {
+          this.getBill();
+      },
+      error: async (error) => {
+        this.dialog.open(AlertDialogComponent, {
+          width: '350px',
+          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+        })
+      }
+    });
+  }
+
+  unConfirm(buyerName: any){
+    let param = {
+      buyerName : buyerName
+    }
+    this.apiService.unConfirmBill(param)
+    .subscribe( {
+      next: async (response) => {
+          this.getBill();
+      },
+      error: async (error) => {
+        this.dialog.open(AlertDialogComponent, {
+          width: '350px',
+          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+        })
       }
     });
   }
