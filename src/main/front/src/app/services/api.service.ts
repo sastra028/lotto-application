@@ -83,9 +83,16 @@ export class ApiService {
         {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
-  getReportTwo(): Observable<any> {
+  getReportTwo(form:any): Observable<any> {
+    const params = JSON.stringify(form);
     return this.http
-      .post(`${API_URL}/api/v2/lotto/report/two`,
+      .post(`${API_URL}/api/v2/lotto/report/two`, params,
+        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+  }
+
+  getRound(): Observable<any> {
+    return this.http
+      .post(`${API_URL}/api/lotto/config//round/list`,
         {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
   }
 

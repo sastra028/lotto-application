@@ -22,6 +22,8 @@ import { ListTwoComponent } from './page/list-two/list-two.component';
 import {MatCardModule} from '@angular/material/card';
 import { AlertDialogComponent } from './component/alert-dialog/alert-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { ConfigulationComponent } from './page/configulation/configulation.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     ListTwoComponent,
     ListThreeMainZeroComponent,
     AlertDialogComponent,
+    ConfigulationComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatIconModule,
     MatMenuModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],

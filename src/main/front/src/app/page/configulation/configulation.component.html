@@ -1,0 +1,53 @@
+<mat-card class="card-form matcard-bg">
+    <div style="width: 80%; ">
+      <form style="padding: 15px;  font-size: 20px;" class="formsearch">
+        <!-- <mat-card-title  style="font-size: 20px;">{{data.billId}} - {{data.name}} - {{data.update}}</mat-card-title> -->
+        <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+          <mat-form-field class="search-full-width" style="margin-right: 25px;">
+            <input matInput  placeholder="เลข"
+                   [(ngModel)]="formSearch.number" name="number" min="1" max="999">
+          </mat-form-field>
+          <div style="height: 60px; margin: 5px 0; ">
+            <p *ngIf="formSearch.number == null"
+               style="font-size: 14px; margin-top: 14px;">เลข</p>
+          </div>
+        </div>
+  
+        <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+          <mat-form-field class="search-full-width" style="margin-right: 25px;">
+            <input matInput  placeholder="บน/ตรง"
+                   [(ngModel)]="formSearch.priceA" name="priceA" type="number" min="1" max="10000">
+          </mat-form-field>
+          <div style="height: 60px; margin: 5px 0; ">
+            <p *ngIf="formSearch.priceA == null"
+               style="font-size: 14px; margin-top: 14px;">บน/ตรง</p>
+          </div>
+        </div>
+  
+        <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+          <mat-form-field class="search-full-width" style="margin-right: 25px;">
+            <input matInput  placeholder="ล่าง/โต๊ท"
+                   [(ngModel)]="formSearch.priceB" name="priceB" type="number" min="1" max="10000">
+          </mat-form-field>
+          <div style="height: 60px; margin: 5px 0; ">
+            <p *ngIf="formSearch.priceB == null"
+               style="font-size: 14px; margin-top: 14px;">ล่าง/โต๊ท</p>
+          </div>
+        </div>
+  
+        <div style="display: flex; flex-direction: column; margin-right: 40px;" class="wrap">
+          <mat-form-field class="search-full-width" style="margin-right: 25px;">
+            <input matInput placeholder="ชื่อ"
+                   [(ngModel)]="formSearch.sellerName" name="sellerName" type="text" min="1">
+          </mat-form-field>
+          <div style="height: 60px; margin: 5px 0; font-size: 14px;">
+            <p *ngIf="formSearch.sellerName == null"
+               class="break-space">ชื่อผู้ขาย</p>
+          </div>
+        </div>
+  
+      </form>
+    </div>
+  
+    <button mat-raised-button style="height: 40px;
+                    font-size: 20px;" (click)="loadData()"><mat-icon>search</mat-icon>&nbsp;ค้นหา&nbsp;</button>

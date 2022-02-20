@@ -306,7 +306,10 @@ export class ListTwoComponent implements OnInit {
   }
 
   loadData(){
-    this.apiService.getReportTwo()
+    let param = {
+
+    }
+    this.apiService.getReportTwo(param)
     .subscribe( {
       next: async (results) => {
         console.log('results 2: '+results);
@@ -317,4 +320,5 @@ export class ListTwoComponent implements OnInit {
       }
     });
   }
+
 }

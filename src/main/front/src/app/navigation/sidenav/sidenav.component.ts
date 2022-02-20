@@ -7,6 +7,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from "@angular/material/dialog";
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -24,7 +25,19 @@ export class SidenavComponent implements OnInit {
   teacherName: any;
   currentDate: any;
 
+  roundList:any;
+
+  selectedValue: any;
+  selectedCar: any;
+
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'},
+  ];
+
   constructor(
+    private apiService: ApiService,
     private router: Router){
       const navigate = this.router.getCurrentNavigation()?.extras.state;
       if(navigate){
@@ -49,5 +62,19 @@ export class SidenavComponent implements OnInit {
 
   logOut(){
 
+  }
+
+  getRound(){
+
+    this.apiService.getRound()
+    .subscribe( {
+      next: async (results) => {
+        console.log('results 2: '+results);
+        this.roundList = results;
+      },
+      error: async (error) => {
+        console.log(error);
+      }
+    });
   }
 }
