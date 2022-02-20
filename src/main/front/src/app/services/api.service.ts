@@ -37,13 +37,6 @@ export class ApiService {
       .post(`${API_URL}/api/lotto/list2`,
         {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
   }
-
-  // getBill(): Observable<any> {
-  //   return this.http
-  //     .post(`${API_URL}/api/lotto/list-bill`,
-  //       {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
-  // }
-
   
   getList3(): Observable<any> {
     return this.http
@@ -64,31 +57,14 @@ export class ApiService {
     const params = JSON.stringify(form);
     return this.http
       .post(`${API_URL}/api/v2/lotto/save`, params,
-        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
-  }
-
-  lottoApplicationSave2(form:any): Observable<any> {
-    const params = JSON.stringify(form);
-
-
-    return this.http.post(`${API_URL}/api/v2/lotto/save`, params);
-  }
-
-  lottoApplicationSave3(form:any): Observable<any> {
-
-    const params = JSON.stringify(form);
-
-    return this.http.post(`${API_URL}/api/v2/lotto/save`, params)
-      .pipe(map(results => {
-        return results;
-      }));
+        {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
   lottoApplicationDelete(form:any): Observable<any> {
     const params = JSON.stringify(form);
     return this.http
       .post(`${API_URL}/api/v2/lotto/delete`, params,
-        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+        {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
   
@@ -96,7 +72,7 @@ export class ApiService {
     const params = JSON.stringify(form);
     return this.http
       .post(`${API_URL}/api/v2/lotto/confirm`, params,
-        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+        {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
   
@@ -104,7 +80,7 @@ export class ApiService {
     const params = JSON.stringify(form);
     return this.http
       .post(`${API_URL}/api/v2/lotto/unConfirm`, params,
-        {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'blob'});
+        {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
 }

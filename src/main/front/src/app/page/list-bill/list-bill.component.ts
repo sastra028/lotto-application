@@ -59,8 +59,8 @@ export class ListBillComponent implements OnInit {
     {billId: 2, name: 'B'},
 
   ];
-
-  billList:any = [
+  billList:any= [];
+  billListTemp:any = [
     {
       billId: 1, 
       name: 'ป้านุ', 
@@ -267,7 +267,7 @@ export class ListBillComponent implements OnInit {
       error: async (error) => {
         this.dialog.open(AlertDialogComponent, {
           width: '350px',
-          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+          data: { message: error.error.errorMessage, type: "ERROR" },
         })
       }
     });
@@ -281,7 +281,7 @@ export class ListBillComponent implements OnInit {
         this.billList = results;
       },
       error: async (error) => {
-        console.log('error');
+        console.log(error);
       }
     });
   }
@@ -298,7 +298,7 @@ export class ListBillComponent implements OnInit {
       error: async (error) => {
         this.dialog.open(AlertDialogComponent, {
           width: '350px',
-          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+          data: { message: error.error.errorMessage, type: "ERROR" },
         })
       }
     });
@@ -317,7 +317,7 @@ export class ListBillComponent implements OnInit {
       error: async (error) => {
         this.dialog.open(AlertDialogComponent, {
           width: '350px',
-          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+          data: { message: error.error.errorMessage, type: "ERROR" },
         })
       }
     });
@@ -335,7 +335,7 @@ export class ListBillComponent implements OnInit {
       error: async (error) => {
         this.dialog.open(AlertDialogComponent, {
           width: '350px',
-          data: { message: "กรุณากรอรข้อมูลให้ครบ", type: "ERROR" },
+          data: { message: error.error.errorMessage, type: "ERROR" },
         })
       }
     });
