@@ -58,8 +58,8 @@ const routes: Routes = [
 
   {
     path: '', component: SidenavComponent, children: [
-      {path: '', redirectTo: 'list-main', pathMatch: 'full'},
-      { path: 'list-main', component: MainListComponent},
+      // {path: '', redirectTo: 'list-main', pathMatch: 'full'},
+      { path: '', component: MainListComponent},
       { path: 'list-bill', component: ListBillComponent},
       { path: 'list-two', component: ListTwoComponent},
       { path: 'list-three-one', component: ListThreeMainZeroComponent},

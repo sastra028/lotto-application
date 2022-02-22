@@ -92,12 +92,10 @@
                         <div  *ngIf="!list.prize" >
                           <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
                         </div>
-                        <span>&nbsp;</span>
-                        <div  *ngIf="!data.lock" >
-                          <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
-                        </div>
-
                       </div>
+                    <div  *ngIf="!data.lock" >
+                      <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
+                    </div>
                     </mat-card>
                     <br>
                     <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.twoUpTotal}}</span> บาท</mat-card-title>
@@ -116,6 +114,9 @@
                       <div  *ngIf="!list.prize" >
                         <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
                       </div>
+                    </div>
+                    <div  *ngIf="!data.lock" >
+                      <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
                     </div>
                   </mat-card>
                   <br>
@@ -140,6 +141,9 @@
                         <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
                       </div>
                     </div>
+                    <div  *ngIf="!data.lock" >
+                      <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
+                    </div>
                   </mat-card>
                   <br>
                   <mat-card-title  style="font-size: 20px;">ซื้อ <span style="color: red;">{{data.twoDownTotal}}</span> บาท</mat-card-title>
@@ -158,6 +162,9 @@
                       <div  *ngIf="!list.prize" >
                         <div style="font-size: 16px;" >{{list.number}} = {{list.price }} บาท</div>
                       </div>
+                    </div>
+                    <div  *ngIf="!data.lock" >
+                      <button mat-stroked-button color="warn" (click)="delete(list.id)">ลบ</button>
                     </div>
                   </mat-card>
                   <br>
