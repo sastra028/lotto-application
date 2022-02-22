@@ -6,6 +6,6 @@ export const environment = {
     }
   };
   // api url
-  export const API_URL = "http://localhost:8081";
+  // export const API_URL = "http://localhost:80";
   // export const API_URL = "http://192.168.2.37:80";
-  // export const API_URL = "lotto-application.ddns.net";
+  export const API_URL = "http://lotto-application.ddns.net";
